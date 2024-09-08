@@ -21,7 +21,7 @@ document.getElementById('generate-button').addEventListener('click', async funct
     const quoteDisplay = document.getElementById('quote-display');
     quoteDisplay.innerText = selectedQuote;
 
-    const apiKey = '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';  // Replace this with your actual OpenAI API key
+    // const apiKey = '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';  // Replace this with your actual OpenAI API key
 
     const prompt = `Based on this quote: "${selectedQuote}", provide a relevant learning technique.`;
 
