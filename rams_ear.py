@@ -45,7 +45,7 @@ def analyze_discussion(transcript):
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
-        messagebox.showerror("Error", f"Error in AI analysis: {e}")
+        messagebox.showerror("Error", f"Error in analysis: {e}")
         return None
 
 def selectFile():
@@ -59,28 +59,25 @@ def processAudio():
     audio_file_path = selectFile()
     if audio_file_path:
         transcript = transcriber(audio_file_path)
-        
         if transcript:
             summary = analyze_discussion(transcript)
-
             if summary:
                 try:
                     summary_text = summary.split('Key Topics:')[0].split('Summary:')[1].strip()
                     topics_text = summary.split('Key Topics:')[1].split('Sentiments:')[0].strip()
                     sentiments_text = summary.split('Sentiments:')[1].split('Study Recommendations:')[0].strip()
                     recommendations_text = summary.split('Study Recommendations:')[1].strip()
-                    
                     summary_label.config(text=f"Summary:\n{summary_text}")
-                    
+
                     for i, topic in enumerate(topics_text.split("\n")[:3]):
-                        topic_boxes[i].config(text=f"{topic.strip()}")
+                        topicBoxes[i].config(text=f"{topic.strip()}")
                     
                     for i, sentiment in enumerate(sentiments_text.split("\n")[:3]):
-                        sentiment_boxes[i].config(text=f"{sentiment.strip()}")
+                        sentimentBoxes[i].config(text=f"{sentiment.strip()}")
                     
                     recommendations = recommendations_text.split('\n')[:3]
                     for i, recommendation in enumerate(recommendations):
-                        recommendation_labels[i].config(text=f"• {recommendation.strip()}")
+                        reccomendationsLabels[i].config(text=f"• {recommendation.strip()}")
 
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to parse the AI response: {e}")
@@ -105,37 +102,34 @@ select_button.pack(pady=10)
 summary_label = tk.Label(root, text="Summary: \n[Waiting for output]", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
 summary_label.pack(pady=10)
 
-topics_label = tk.Label(root, text="Topics", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
-topics_label.pack(pady=10)
-
-topics_frame = tk.Frame(root, bg="#f4f4f4")
-topics_frame.pack(pady=10)
-
-topic_boxes = []
+topicsLabel = tk.Label(root, text="Topics", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
+topicsLabel.pack(pady=10)
+topicsFrame = tk.Frame(root, bg="#f4f4f4")
+topicsFrame.pack(pady=10)
+topicBoxes = []
 for _ in range(3):
-    topic_box = tk.Label(topics_frame, text="", font=label_font, width=20, height=2, bg="#e0e0e0", fg="black", relief=tk.RAISED)
+    topic_box = tk.Label(topicsFrame, text="", font=label_font, width=20, height=2, bg="#e0e0e0", fg="black", relief=tk.RAISED)
     topic_box.pack(side=tk.LEFT, padx=10, pady=5)
-    topic_boxes.append(topic_box)
+    topicBoxes.append(topic_box)
 
-sentiments_label = tk.Label(root, text="Sentiments", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
-sentiments_label.pack(pady=10)
+sentimentsLabel = tk.Label(root, text="Sentiments", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
+sentimentsLabel.pack(pady=10)
+sentimentsFrame = tk.Frame(root, bg="#f4f4f4")
+sentimentsFrame.pack(pady=10)
 
-sentiments_frame = tk.Frame(root, bg="#f4f4f4")
-sentiments_frame.pack(pady=10)
-
-sentiment_boxes = []
+sentimentBoxes = []
 for _ in range(3):
-    sentiment_box = tk.Label(sentiments_frame, text="", font=label_font, width=20, height=2, bg="#e0e0e0", fg="black", relief=tk.RAISED)
+    sentiment_box = tk.Label(sentimentsFrame, text="", font=label_font, width=20, height=2, bg="#e0e0e0", fg="black", relief=tk.RAISED)
     sentiment_box.pack(side=tk.LEFT, padx=10, pady=5)
-    sentiment_boxes.append(sentiment_box)
+    sentimentBoxes.append(sentiment_box)
 
-recommendations_label = tk.Label(root, text="Recommendations", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
-recommendations_label.pack(pady=10)
+reccomendationsLabel = tk.Label(root, text="Recommendations", font=label_font, bg="#f4f4f4", wraplength=600, fg="black")
+reccomendationsLabel.pack(pady=10)
 
-recommendation_labels = []
+reccomendationsLabels = []
 for _ in range(3):
     rec_label = tk.Label(root, text="", font=label_font, bg="#f4f4f4", fg="black", wraplength=600)
     rec_label.pack(pady=5)
-    recommendation_labels.append(rec_label)
+    reccomendationsLabels.append(rec_label)
 
 root.mainloop()
